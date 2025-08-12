@@ -8,6 +8,8 @@ import Search from "./Search";
 import { Form } from "@/components/ui/form";
 import { CiSearch } from "react-icons/ci";
 import { useRouter } from "next/navigation";
+import { citiesData, listingTypesData, propertyTypesData } from "@/app/options/options";
+import Link from "next/link";
 
 export default function Header() {
     const router = useRouter();
@@ -21,6 +23,10 @@ export default function Header() {
         }
     });
 
+    const { watch, setValue } = form;
+    const selectedCity = watch("city_slug");
+    const selectedDistrict = watch("district_slug");
+
     const onSubmit: SubmitHandler<FieldValues> = (data: any) => {
         const queryParams = new URLSearchParams();
 
@@ -32,6 +38,42 @@ export default function Header() {
         router.push(`/listings?${queryParams.toString()}`);
     }
 
+    const getDistrictsForCity = () => {
+        const city = citiesData.find(c => c.value === selectedCity);
+        const districtsWithAll = [{ value: '__all__', title: 'Tüm İlçeler' }];
+
+        if (city) {
+            return districtsWithAll.concat(city.districts);
+        }
+
+        return districtsWithAll;
+    };
+
+    const handleCityChange = (value: string) => {
+        const newValue = value === '__all__' ? '' : value;
+        setValue('city_slug', newValue);
+        setValue('district_slug', '');
+    };
+
+    const handleDistrictChange = (value: string) => {
+        const newValue = value === '__all__' ? '' : value;
+        setValue('district_slug', newValue);
+    };
+
+    const handleListingTypeChange = (value: string) => {
+        const newValue = value === '__all__' ? '' : value;
+        setValue('listing_type', newValue);
+    };
+
+    const handlePropertyTypeChange = (value: string) => {
+        const newValue = value === '__all__' ? '' : value;
+        setValue('property_type_key', newValue);
+    };
+
+    const citiesWithAll = [{ value: '__all__', title: 'Tüm Şehirler' }].concat(citiesData);
+    const listingTypesWithAll = [{ "value": "__all__", "title": "Tüm Durumlar" }].concat(listingTypesData);
+    const propertyTypesWithAll = [{ "value": "__all__", "title": "Tüm Kategoriler" }].concat(propertyTypesData);
+
     return (
         <section className="w-full h-screen flex flex-col justify-center bg-[linear-gradient(rgba(0,0,0,1),rgba(0,0,0,0.5)),url('/header-image.jpg')] bg-cover bg-center bg-no-repeat">
             <Navbar normal={true} />
@@ -40,9 +82,11 @@ export default function Header() {
                 <p className="text-[#dbdbdb] text-center">
                     Satın alıyor, satıyor ya da hiçbir şey yapmıyor olsanız da mutlu olacaksınız.
                 </p>
-                <Button variant="primary">
-                    Keşfet
-                </Button>
+                <Link href="/listings">
+                    <Button variant="primary" size="lg" className="rounded-full">
+                        Keşfet
+                    </Button>
+                </Link>
             </div>
             <div className="w-full flex items-center justify-center bg-white mt-auto rounded-tl-xl rounded-tr-xl py-10">
                 <div className="w-full max-w-5/6">
@@ -53,42 +97,33 @@ export default function Header() {
                                 name="listing_type"
                                 placeholder="Durum"
                                 label="Durum"
-                                selectItem={[
-                                    { "value": "sale", "title": "Satılık" },
-                                    { "value": "rent", "title": "Kiralık" },
-                                ]}
+                                selectItem={listingTypesWithAll}
+                                onValueChange={handleListingTypeChange}
                             />
                             <Search
                                 control={form.control}
                                 name="property_type_key"
                                 placeholder="Kategori"
                                 label="Kategori"
-                                selectItem={[
-                                    { "value": "apartment", "title": "Apartman" },
-                                    { "value": "villa", "title": "Villa" },
-                                    { "value": "independent", "title": "Müstakil Ev" },
-                                    { "value": "residence", "title": "Rezidans" },
-                                ]}
+                                selectItem={propertyTypesWithAll}
+                                onValueChange={handlePropertyTypeChange}
                             />
                             <Search
                                 control={form.control}
                                 name="city_slug"
                                 placeholder="Şehir"
                                 label="Şehir"
-                                selectItem={[
-                                    { "value": "ist", "title": "İstanbul" },
-                                    { "value": "izm", "title": "İzmir" },
-                                ]}
+                                selectItem={citiesWithAll}
+                                onValueChange={handleCityChange}
                             />
                             <Search
                                 control={form.control}
                                 name="district_slug"
                                 placeholder="İlçe"
                                 label="İlçe"
-                                selectItem={[
-                                    { "value": "kadikoy", "title": "Kadıköy" },
-                                    { "value": "bornova", "title": "Bornova" },
-                                ]}
+                                selectItem={getDistrictsForCity()}
+                                disabled={!selectedCity}
+                                onValueChange={handleDistrictChange}
                             />
 
                             <Button variant="primary" type="submit" className="md:w-[100px] w-full">

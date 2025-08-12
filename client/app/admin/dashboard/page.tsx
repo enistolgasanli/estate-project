@@ -2,6 +2,8 @@ import { DashboardDataTable } from "./components/DashboardDataTable";
 
 export default function Dashboard() {
     return (
-        <DashboardDataTable />
+        <div className="w-full h-full mt-16">
+            <DashboardDataTable />
+        </div>
     );
 }

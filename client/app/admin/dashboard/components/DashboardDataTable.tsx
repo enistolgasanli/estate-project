@@ -35,48 +35,129 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import Image from "next/image"
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
-const data: Payment[] = [
+const data: Properties[] = [
     {
         id: "m5gr84i9",
-        amount: 316,
-        status: "success",
-        email: "ken99@example.com",
+        imageSrc: "/home.jpg",
+        title: "Lüks Villa",
+        description: "Satılık mükemmel lüks villa",
+        listing_type: "sale",
+        price: "9999",
+        area_m2: 100,
+        beds: 1,
+        baths: 1,
+        toilet: 1,
+        balcony: 1,
+        rooms: "1+0",
+        full_address: "İstanbul, Kadıköy",
+        city: "İstanbul",
+        district: "Kadıköy",
+        property_type: "Daire",
+        views_count: 100
     },
     {
-        id: "3u1reuv4",
-        amount: 242,
-        status: "success",
-        email: "Abe45@example.com",
+        id: "m5gr84i9",
+        imageSrc: "/home.jpg",
+        title: "Lüks Daire",
+        description: "Satılık mükemmel lüks villa",
+        listing_type: "sale",
+        price: "9999",
+        area_m2: 100,
+        beds: 1,
+        baths: 1,
+        toilet: 1,
+        balcony: 1,
+        rooms: "1+0",
+        full_address: "İstanbul, Kadıköy",
+        city: "İstanbul",
+        district: "Kadıköy",
+        property_type: "Daire",
+        views_count: 100
     },
     {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "Monserrat44@example.com",
+        id: "m5gr84i9",
+        imageSrc: "/home.jpg",
+        title: "Lüks Villa",
+        description: "Satılık mükemmel lüks villa",
+        listing_type: "sale",
+        price: "9999",
+        area_m2: 100,
+        beds: 1,
+        baths: 1,
+        toilet: 1,
+        balcony: 1,
+        rooms: "1+0",
+        full_address: "İstanbul, Kadıköy",
+        city: "İstanbul",
+        district: "Kadıköy",
+        property_type: "Daire",
+        views_count: 100
     },
     {
-        id: "5kma53ae",
-        amount: 874,
-        status: "success",
-        email: "Silas22@example.com",
+        id: "m5gr84i9",
+        imageSrc: "/home.jpg",
+        title: "Lüks Villa",
+        description: "Satılık mükemmel lüks villa",
+        listing_type: "sale",
+        price: "9999",
+        area_m2: 100,
+        beds: 1,
+        baths: 1,
+        toilet: 1,
+        balcony: 1,
+        rooms: "1+0",
+        full_address: "İstanbul, Kadıköy",
+        city: "İstanbul",
+        district: "Kadıköy",
+        property_type: "Daire",
+        views_count: 100
+
     },
     {
-        id: "bhqecj4p",
-        amount: 721,
-        status: "failed",
-        email: "carmella@example.com",
+        id: "m5gr84i9",
+        imageSrc: "/home.jpg",
+        title: "Lüks Villa",
+        description: "Satılık mükemmel lüks villa",
+        listing_type: "sale",
+        price: "9999",
+        area_m2: 100,
+        beds: 1,
+        baths: 1,
+        toilet: 1,
+        balcony: 1,
+        rooms: "1+0",
+        full_address: "İstanbul, Kadıköy",
+        city: "İstanbul",
+        district: "Kadıköy",
+        property_type: "Daire",
+        views_count: 100,
     },
 ]
 
-export type Payment = {
+export type Properties = {
     id: string
-    amount: number
-    status: "pending" | "processing" | "success" | "failed"
-    email: string
+    imageSrc: string;
+    title: string;
+    description: string;
+    listing_type: string;
+    price: string;
+    area_m2: number;
+    beds: number;
+    baths: number;
+    toilet: number;
+    balcony: number;
+    rooms: string;
+    full_address: string;
+    city: string;
+    district: string;
+    property_type: string;
+    views_count: number;
 }
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Properties>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -100,68 +181,204 @@ export const columns: ColumnDef<Payment>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "status",
-        header: "Status",
+        id: "imageSrc",
+        header: "Görsel",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("status")}</div>
-        ),
+            <div className="relative w-[100px] h-[100px]">
+                <Image
+                    src="/home.jpg"
+                    alt="Home"
+                    fill
+                    className="rounded-xl object-cover"
+                />
+            </div>
+        )
     },
     {
-        accessorKey: "email",
+        accessorKey: "title",
+        size: 100,
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Email
+                    İlan Başlığı
                     <ArrowUpDown />
                 </Button>
             )
         },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+        cell: ({ row }) => <div className="text-center">{row.getValue("title")}</div>,
     },
     {
-        accessorKey: "amount",
-        header: () => <div className="text-right">Amount</div>,
-        cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("amount"))
-
-            // Format the amount as a dollar amount
-            const formatted = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-            }).format(amount)
-
-            return <div className="text-right font-medium">{formatted}</div>
-        },
+        accessorKey: "description",
+        size: 100,
+        header: "Açıklama",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("description")}</div>
+        ),
+    },
+    {
+        accessorKey: "listing_type",
+        size: 100,
+        header: "Emlak Durumu",
+        cell: ({ row }) => (
+            <div className="capitalize">
+                {
+                    row.getValue("listing_type") === "sale" ? (
+                        <span>
+                            Satılık
+                        </span>
+                    ) : (
+                        <span>
+                            Kiralık
+                        </span>
+                    )
+                }
+            </div>
+        ),
+    },
+    {
+        accessorKey: "price",
+        size: 100,
+        header: "Fiyat",
+        cell: ({ row }) => (
+            <div className="capitalize"><span className="font-semibold">₺</span> {row.getValue("price")}</div>
+        ),
+    },
+    {
+        accessorKey: "area_m2",
+        size: 100,
+        header: "Metrekare",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("area_m2")}</div>
+        ),
+    },
+    {
+        accessorKey: "beds",
+        size: 100,
+        header: "Yatak Odası Sayısı",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("beds")}</div>
+        ),
+    },
+    {
+        accessorKey: "baths",
+        size: 100,
+        header: "Banyo Sayısı",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("baths")}</div>
+        ),
+    },
+    {
+        accessorKey: "toilet",
+        size: 100,
+        header: "Tuvalet Sayısı",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("toilet")}</div>
+        ),
+    },
+    {
+        accessorKey: "balcony",
+        size: 100,
+        header: "Balkon Sayısı",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("balcony")}</div>
+        ),
+    },
+    {
+        accessorKey: "rooms",
+        size: 100,
+        header: "Oda Sayısı",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("rooms")}</div>
+        ),
+    },
+    {
+        accessorKey: "full_address",
+        size: 100,
+        header: "Adres",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("full_address")}</div>
+        ),
+    },
+    {
+        accessorKey: "city",
+        size: 100,
+        header: "İl",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("city")}</div>
+        ),
+    },
+    {
+        accessorKey: "district",
+        size: 100,
+        header: "İlçe",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("district")}</div>
+        ),
+    },
+    {
+        accessorKey: "property_type",
+        size: 100,
+        header: "Ev Türü",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("property_type")}</div>
+        ),
+    },
+    {
+        accessorKey: "views_count",
+        size: 100,
+        header: "Görüntülenme Sayısı",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("views_count")}</div>
+        ),
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const payment = row.original
-
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center justify-center gap-x-4">
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="default" className="bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 cursor-pointer">
+                                Güncelle
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogTitle>Değişiklikleri Onayla</DialogTitle>
+                            <DialogDescription>Onaylarsanız yaptığınız değişiklikler kaydedilecek ve geri alınamayacaktır.</DialogDescription>
+                            <div className="flex items-center justify-start gap-x-4 mt-4">
+                                <Button variant="default" className="bg-neutral-200 text-neutral-800 hover:bg-neutral-300 transition-all duration-500 cursor-pointer">
+                                    İptal
+                                </Button>
+                                <Button variant="default" className="bg-green-500 hover:bg-green-600 transition-all duration-500 cursor-pointer">
+                                    Onayla
+                                </Button>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="default" className="bg-rose-600 hover:bg-rose-700 transition-all duration-500 cursor-pointer">
+                                Kaldır
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogTitle>İlanı Kaldırma Onayı</DialogTitle>
+                            <DialogDescription>Bu ilanı kaldırmak istediğinize emin misiniz? Bu işlem geri alınamaz.</DialogDescription>
+                            <div className="flex items-center justify-start gap-x-4 mt-4">
+                                <Button variant="default" className="bg-neutral-200 text-neutral-800 hover:bg-neutral-300 transition-all duration-500 cursor-pointer">
+                                    İptal
+                                </Button>
+                                <Button variant="default" className="bg-rose-600 hover:bg-rose-700 transition-all duration-500 cursor-pointer">
+                                    Kaldır
+                                </Button>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                </div>
             )
         },
     },
@@ -197,41 +414,54 @@ export function DashboardDataTable() {
 
     return (
         <div className="w-full">
-            <div className="flex items-center py-4">
+            <div className="flex items-center justify-between gap-x-8 py-4">
                 <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                    placeholder="İlan Başlığı"
+                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
+                        table.getColumn("title")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDown />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center justify-center gap-x-2">
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="default" className="bg-[#191919] hover:bg-[#333] transition-all duration-500 cursor-pointer">
+                                İlan Ekle
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogTitle className="hidden" />
+                            test
+                        </DialogContent>
+                    </Dialog>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="ml-auto">
+                                Sütun <ChevronDown />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {table
+                                .getAllColumns()
+                                .filter((column) => column.getCanHide())
+                                .map((column) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            key={column.id}
+                                            className="capitalize"
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) =>
+                                                column.toggleVisibility(!!value)
+                                            }
+                                        >
+                                            {column.id}
+                                        </DropdownMenuCheckboxItem>
+                                    )
+                                })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
             <div className="overflow-hidden rounded-md border">
                 <Table>
@@ -240,7 +470,7 @@ export function DashboardDataTable() {
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead key={header.id} style={{ width: `${header.column.getSize()}px` }} className="px-8 text-center w-[150px]">
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -261,7 +491,7 @@ export function DashboardDataTable() {
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell key={cell.id} style={{ width: `${cell.column.getSize()}px` }} className="text-center">
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()
@@ -285,8 +515,7 @@ export function DashboardDataTable() {
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="text-muted-foreground flex-1 text-sm">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
+                    {table.getFilteredSelectedRowModel().rows.length} satır seçildi.
                 </div>
                 <div className="space-x-2">
                     <Button
@@ -295,7 +524,7 @@ export function DashboardDataTable() {
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
                     >
-                        Previous
+                        Önceki Sayfa
                     </Button>
                     <Button
                         variant="outline"
@@ -303,7 +532,7 @@ export function DashboardDataTable() {
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
                     >
-                        Next
+                        Diğer Sayfa
                     </Button>
                 </div>
             </div>

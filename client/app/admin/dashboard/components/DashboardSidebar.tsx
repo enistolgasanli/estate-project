@@ -1,5 +1,5 @@
 "use client";
-
+import { FiSettings } from "react-icons/fi";
 import { MdOutlineRealEstateAgent, MdOutlineSpaceDashboard } from "react-icons/md";
 import DashboardLink from "./DashboardLink";
 import { IoMdHome, IoMdSettings } from "react-icons/io";
@@ -8,27 +8,29 @@ import { AiOutlineTransaction } from "react-icons/ai";
 import { BiSupport } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 import { FiLogOut } from "react-icons/fi";
+import { PiHouseLine } from "react-icons/pi";
+import Link from "next/link";
+import Image from "next/image";
+
 
 
 export default function DashboardSidebar() {
     return (
         <div className="md:flex hidden flex-col items-center lg:w-64 w-auto h-full bg-white rounded-2xl shadow-md p-4">
             <div className="lg:block hidden">
-                Logo
+                <Image src="/logo.png" alt="Logo" width={65} height={65} />
             </div>
             <div className="w-full h-full flex flex-col items-center justify-center gap-y-3 mt-5">
-                <DashboardLink icon={MdOutlineSpaceDashboard} text="Dashboard" href="/admin/dashboard" />
-                <DashboardLink icon={IoMdHome} text="Property" href="/admin/properties" />
-                <DashboardLink icon={TbBrandGoogleAnalytics} text="Analytics" href="/admin/dashboard/properties" />
-                <DashboardLink icon={MdOutlineRealEstateAgent} text="Agents" href="#" />
-                <DashboardLink icon={AiOutlineTransaction} text="Transaction" href="#" />
-                <DashboardLink icon={BiSupport} text="Help & Support" href="#" />
-                <DashboardLink icon={IoMdSettings} text="Settings" href="#" />
+                <DashboardLink icon={PiHouseLine} text="İlanlar" href="/admin/dashboard" />
+                <DashboardLink icon={TbBrandGoogleAnalytics} text="Analiz" href="/admin/dashboard/analytics" />
+                <DashboardLink icon={MdOutlineRealEstateAgent} text="Danışmanlar" href="#" />
+                <DashboardLink icon={BiSupport} text="Yardım & Destek" href="#" />
+                <DashboardLink icon={FiSettings} text="Ayarlar" href="#" />
                 <div className="w-full mt-auto">
                     <Button variant="ghost" size="lg" className="w-full justify-start text-rose-600 hover:text-rose-600 cursor-pointer">
                         <FiLogOut className="size-5" />
                         <span className="lg:block hidden">
-                            Logout
+                            Çıkış Yap
                         </span>
                     </Button>
                 </div>

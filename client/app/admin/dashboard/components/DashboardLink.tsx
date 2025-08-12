@@ -17,7 +17,7 @@ export default function DashboardLink({ icon: Icon, text, href }: DashboardLinkP
     return (
         <Link href={href} className={cn(
             "flex items-center gap-x-2 w-full text-[#737373] hover:bg-slate-100 px-4 py-3 rounded-lg",
-            pathname === href && "bg-yellow-100 text-yellow-700 hover:bg-yellow-200",
+            pathname === href && "bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition-all duration-500",
             text === "Logout" && "text-rose-600"
         )}>
             <Icon className="size-5" />

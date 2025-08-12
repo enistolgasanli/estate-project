@@ -4,9 +4,9 @@ import DashboardNavbar from "./components/DashboardNavbar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex gap-x-8 w-full h-full bg-[#f9fbfc] p-4">
+        <div className=" w-full h-full flex gap-x-8 bg-[#f9fbfc] p-4">
             <DashboardSidebar />
-            <div className="flex-1 flex flex-col w-full">
+            <div className=" w-full flex-1 flex flex-col min-w-0">
                 <DashboardNavbar />
                 {children}
             </div>

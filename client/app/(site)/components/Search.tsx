@@ -11,16 +11,28 @@ type SearchProps = {
         value: string;
         title: string;
     }[];
+    disabled?: boolean;
+    onValueChange?: (value: string) => void;
 }
 
-export default function Search({ control, name, placeholder, label, selectItem }: SearchProps) {
+export default function Search({ control, name, placeholder, label, selectItem, disabled, onValueChange }: SearchProps) {
     return (
         <FormField
             control={control}
             name={name}
             render={({ field }) => (
                 <FormItem className="w-full">
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                        onValueChange={(value) => {
+                            field.onChange(value);
+
+                            if (onValueChange) {
+                                onValueChange(value);
+                            }
+                        }}
+                        value={field.value || ""}
+                        disabled={disabled}
+                    >
                         <SelectTrigger className="w-full rounded-full border-gray-500 cursor-pointer">
                             <SelectValue placeholder={placeholder} />
                         </SelectTrigger>

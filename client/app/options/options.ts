@@ -1425,3 +1425,15 @@ export const citiesData = [
 ];
 
 export const roomOptions = ["1+0", "1+1", "2+0", "2+1", "3+0", "3+1", "4+0", "4+1", "5+1+"];
+
+export const listingTypesData = [
+    { "value": "sale", "title": "Satılık" },
+    { "value": "rent", "title": "Kiralık" },
+];
+
+export const propertyTypesData = [
+    { "value": "apartment", "title": "Apartman" },
+    { "value": "villa", "title": "Villa" },
+    { "value": "independent", "title": "Müstakil Ev" },
+    { "value": "residence", "title": "Rezidans" },
+];

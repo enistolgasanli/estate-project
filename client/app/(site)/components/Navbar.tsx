@@ -24,27 +24,27 @@ export default function Navbar({ normal, sidebar }: NavbarProps) {
                 </Link>
                 <ul className="hidden md:flex items-center justify-center gap-x-4">
                     <li>
-                        <Link href="#" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
+                        <Link href="/" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
                             Anasayfa
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
+                        <Link href="/listings?listing_type=sale" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
                             Satılık
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
+                        <Link href="/listings?listing_type=rent" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
                             Kiralık
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
+                        <Link href="/about-us" className="px-4 py-3 hover:bg-gray-200 rounded-full transition-all duration-150">
                             Hakkımızda
                         </Link>
                     </li>
                 </ul>
-                <Link href="#" className="hidden md:block px-4 py-3 bg-yellow-700 hover:bg-yellow-900 text-white rounded-full transition-all duration-150">
+                <Link href="/about-us" className="hidden md:block px-4 py-3 bg-yellow-700 hover:bg-yellow-900 text-white rounded-full transition-all duration-150">
                     Bize Ulaşın
                 </Link>
                 <Sheet>

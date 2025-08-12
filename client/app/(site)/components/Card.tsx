@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import { FaTurkishLiraSign } from "react-icons/fa6";
 
 type CardProps = {
     title: string;
     listing: {
+        id: string;
         title: string;
         description: string;
         price: string;
@@ -43,9 +45,11 @@ export default function Card({ title, listing }: CardProps) {
                     </p>
                 </div>
                 <div className="mt-5">
-                    <Button variant="primary" className="w-full">
-                        Detaylar
-                    </Button>
+                    <Link href={`/details/${listing.id}`}>
+                        <Button variant="primary" className="w-full">
+                            Detaylar
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </div>

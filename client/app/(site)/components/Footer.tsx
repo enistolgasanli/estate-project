@@ -6,7 +6,7 @@ import { RiTwitterXLine } from "react-icons/ri";
 
 export default function Footer() {
     return (
-        <footer className="bg-[#101010] w-full h-[300px] mt-20 rounded-tl-xl rounded-tr-xl flex items-center justify-center z-99">
+        <footer className="bg-[#101010] w-full mt-20 rounded-tl-xl rounded-tr-xl flex items-center justify-center z-99 py-6">
             <div className="w-full max-w-5/6 h-full flex flex-col items-center justify-center text-white">
                 <div className="w-full flex items-center justify-between border-b py-6">
                     <div>
