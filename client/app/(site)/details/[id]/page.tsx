@@ -12,7 +12,7 @@ export default function Details({ params }: { params: Promise<{ id: string }> })
     const [properties, setProperties] = useState();
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/properties/${id}`).then(res => {
+        axios.get(`http://127.0.0.1:8000/api/listings/${id}`).then(res => {
             if (res.status === 200) {
                 setProperties(res.data);
             }

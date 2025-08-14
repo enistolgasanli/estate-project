@@ -10,8 +10,12 @@ type Listing = {
     title: string;
     description: string;
     price: string;
-    city: string;
-    district: string;
+    city: {
+        name: string;
+    };
+    district: {
+        name: string;
+    };
     address: string;
     listing_type: "sale" | "rent";
     created_at: string;
@@ -23,7 +27,7 @@ export default function Main() {
     const [rentListings, setRentListings] = useState<Listing[]>([]);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/api/properties").then(res => {
+        axios.get("http://127.0.0.1:8000/api/listings").then(res => {
             if (res.status === 200) {
                 const listings = res.data as Listing[];
 

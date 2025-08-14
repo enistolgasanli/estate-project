@@ -13,7 +13,7 @@ type DashboardLinkProps = {
 
 export default function DashboardLink({ icon: Icon, text, href }: DashboardLinkProps) {
     const pathname = usePathname();
-    
+
     return (
         <Link href={href} className={cn(
             "flex items-center gap-x-2 w-full text-[#737373] hover:bg-slate-100 px-4 py-3 rounded-lg",

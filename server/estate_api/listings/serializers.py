@@ -1,14 +1,14 @@
-from rest_framework import serializers
-from listings.models import Property
+# from rest_framework import serializers
+# from listings.models import Property
 
-class PropertySerializer(serializers.ModelSerializer):
-    city = serializers.StringRelatedField()
-    district = serializers.StringRelatedField()
-    property_type = serializers.StringRelatedField()
+# class PropertySerializer(serializers.ModelSerializer):
+#     city = serializers.StringRelatedField()
+#     district = serializers.StringRelatedField()
+#     property_type = serializers.StringRelatedField()
 
-    class Meta:
-        model = Property
-        fields = "__all__"
+#     class Meta:
+#         model = Property
+#         fields = "__all__"
 
 # apps/realestate/serializers.py
 from rest_framework import serializers
@@ -48,7 +48,7 @@ class ListingListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Listing
-        fields = ('id', 'title', 'price', 'currency', 'status', 'city', 'district', 'area_m2', 'rooms', 'cover')
+        fields = ('id', 'title', 'price', 'currency', 'status', 'city', 'district', 'area_m2', 'rooms', 'cover', 'listing_type')
 
     def get_cover(self, obj):
         cover = obj.images.filter(is_cover=True).first()

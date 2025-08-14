@@ -40,7 +40,7 @@ export default function AboutUsValues({ title, text, listTitle, listItem, revers
                 </ul>
             </div>
             <div className="relative flex-1 h-[300px] md:block hidden">
-                <Image 
+                <Image
                     src="/home.jpg"
                     alt="Home"
                     fill

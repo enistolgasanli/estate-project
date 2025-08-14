@@ -45,11 +45,11 @@ export default function ListingCards({ property }: ListingCardsProps) {
                 <div className="w-full mt-5 flex items-center gap-x-4">
                     <div className="flex items-center bg-gray-200 px-2 py-1 rounded-full border border-gray-400 gap-x-1">
                         <MdMeetingRoom />
-                        <span className="text-sm text-[#737373]">6 Room</span>
+                        <span className="text-sm text-[#737373]">{property.rooms} Room</span>
                     </div>
                     <div className="flex items-center bg-gray-200 px-2 py-1 rounded-full border border-gray-400 gap-x-1">
                         <BsTextarea />
-                        <span className="text-sm text-[#737373]">100 m²</span>
+                        <span className="text-sm text-[#737373]">{property.area_m2} m²</span>
                     </div>
                     <div className="flex items-center bg-gray-200 px-2 py-1 rounded-full border border-gray-400 gap-x-1">
                         <LuToilet />

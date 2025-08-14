@@ -37,6 +37,8 @@ import {
 } from "@/components/ui/table"
 import Image from "next/image"
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "@/components/ui/select"
 
 const data: Properties[] = [
     {
@@ -431,8 +433,93 @@ export function DashboardDataTable() {
                             </Button>
                         </DialogTrigger>
                         <DialogContent>
-                            <DialogTitle className="hidden" />
-                            test
+                            <DialogTitle>İlan Ekle</DialogTitle>
+                            <DialogDescription>İlan bilgilerini doldurunuz.</DialogDescription>
+                            <form action="" className="space-y-6">
+                                <div className="flex items-center justify-center gap-x-4">
+                                    <Input placeholder="İlan Başlığı" />
+                                    <Input placeholder="Fiyat" />
+                                </div>
+                                <div className="flex items-center justify-center gap-x-4">
+                                    <Input placeholder="Metrekare" />
+                                    <Input placeholder="Yatak Odası Sayısı" />
+                                </div>
+                                <div className="flex items-center justify-center gap-x-4">
+                                    <Input placeholder="Banyo Sayısı" />
+                                    <Input placeholder="Tuvalet Sayısı" />
+                                </div>
+                                <div className="flex items-center justify-center gap-x-4">
+                                    <Input placeholder="Balkon Sayısı" />
+                                    <Input placeholder="Oda Sayısı" />
+                                </div>
+                                <div className="flex items-center justify-center gap-x-4">
+                                    <Select>
+                                        <SelectTrigger className="w-full">
+                                            İl
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>İl</SelectLabel>
+                                                <SelectItem value="ist">
+                                                    İstanbul
+                                                </SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    <Select>
+                                        <SelectTrigger className="w-full">
+                                            İlçe
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>İlçe</SelectLabel>
+                                                <SelectItem value="ist">
+                                                    Kadıköy
+                                                </SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="flex items-center justify-center gap-x-4">
+                                    <Select>
+                                        <SelectTrigger className="w-full">
+                                            Mahalle
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Mahalle</SelectLabel>
+                                                <SelectItem value="ist">
+                                                    test
+                                                </SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    <Select>
+                                        <SelectTrigger className="w-full">
+                                            Ev Türü
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Ev Türü</SelectLabel>
+                                                <SelectItem value="ist">
+                                                    Daire
+                                                </SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div>
+                                    <Textarea placeholder="Açıklama" />
+                                </div>
+                                <div className="flex items-center justify-start gap-x-4">
+                                    <Button variant="default" className="bg-neutral-200 hover:bg-neutral-300 text-neutral-800 transition-all duration-500 cursor-pointer">
+                                        İptal
+                                    </Button>
+                                    <Button variant="default" className="bg-green-500 hover:bg-green-600 transition-all duration-500 cursor-pointer">
+                                        Ekle
+                                    </Button>
+                                </div>
+                            </form>
                         </DialogContent>
                     </Dialog>
                     <DropdownMenu>

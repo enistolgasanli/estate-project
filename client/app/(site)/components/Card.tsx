@@ -10,14 +10,17 @@ type CardProps = {
         title: string;
         description: string;
         price: string;
-        city: string;
-        district: string;
+        city: {
+            name: string;
+        };
+        district: {
+            name: string;
+        };
     }
 }
 
 export default function Card({ title, listing }: CardProps) {
-    console.log(listing.city)
-    console.log(listing.district)
+    console.log(listing);
 
     return (
         <div className="w-full h-[500px] mt-10 relative group transition-all duration-500">
@@ -34,7 +37,7 @@ export default function Card({ title, listing }: CardProps) {
                 <h1 className="text-white text-2xl">{listing.title}</h1>
                 <div className="mt-5">
                     <p className="text-[#dbdbdb]">
-                        Location: {listing.city}, {listing.district}
+                        Location: {listing.city.name}, {listing.district.name}
                     </p>
                     <p className="text-[#dbdbdb] flex items-center gap-x-2">
                         <span>Price:</span>

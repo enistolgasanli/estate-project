@@ -11,10 +11,26 @@ import { FiLogOut } from "react-icons/fi";
 import { PiHouseLine } from "react-icons/pi";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 
 
 export default function DashboardSidebar() {
+    const router = useRouter();
+
+
+    const handleLogout = () => {
+        axios.post("http://localhost:8000/api/auth/logout").then(res => {
+            if (res.status === 200) {
+                console.log("Logout success");
+                router.push("/admin");
+            }
+        }).catch(error => {
+            console.log("Something went wrong", error);
+        });
+    }
+
     return (
         <div className="md:flex hidden flex-col items-center lg:w-64 w-auto h-full bg-white rounded-2xl shadow-md p-4">
             <div className="lg:block hidden">
@@ -27,7 +43,7 @@ export default function DashboardSidebar() {
                 <DashboardLink icon={BiSupport} text="Yardım & Destek" href="#" />
                 <DashboardLink icon={FiSettings} text="Ayarlar" href="#" />
                 <div className="w-full mt-auto">
-                    <Button variant="ghost" size="lg" className="w-full justify-start text-rose-600 hover:text-rose-600 cursor-pointer">
+                    <Button onClick={handleLogout} variant="ghost" size="lg" className="w-full justify-start text-rose-600 hover:text-rose-600 cursor-pointer">
                         <FiLogOut className="size-5" />
                         <span className="lg:block hidden">
                             Çıkış Yap

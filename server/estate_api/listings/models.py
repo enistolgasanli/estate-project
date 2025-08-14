@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 from users.models import CustomUser
+from django.utils.text import slugify
 
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,6 +28,12 @@ class SoftDeleteModel(models.Model):
 class City(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=140, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -35,9 +42,15 @@ class District(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name="districts")
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=140, blank=True)
 
     class Meta:
         unique_together = ("city", "name")
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name}, {self.city.name}"
@@ -72,6 +85,20 @@ class AgentProfile(TimeStampedModel):
     def __str__(self):
         return f"{self.user} - Agent"
     
+class Feature(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
 class Listing(TimeStampedModel, SoftDeleteModel):
     STATUS_CHOICES = [
         ('draft', 'Draft'),
@@ -80,6 +107,11 @@ class Listing(TimeStampedModel, SoftDeleteModel):
         ('sold', 'Sold'),
         ('rented', 'Rented'),
         ('archived', 'Archived'),
+    ]
+
+    LISTING_TYPE_CHOICES = [
+        ("sale", "Satılık"),
+        ("rent", "Kiralık")
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -92,6 +124,7 @@ class Listing(TimeStampedModel, SoftDeleteModel):
     currency = models.CharField(max_length=8, default='TRY')
     is_negotiable = models.BooleanField(default=False)
     status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='draft', db_index=True)
+    listing_type = models.CharField(max_length=50, choices=LISTING_TYPE_CHOICES)
 
     # location
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
@@ -105,10 +138,11 @@ class Listing(TimeStampedModel, SoftDeleteModel):
     bathrooms = models.PositiveSmallIntegerField(null=True, blank=True)
     floor = models.CharField(max_length=32, blank=True)  # e.g., 3/5
 
+    features = models.ManyToManyField(Feature, blank=True, related_name="features")
     has_elevator = models.BooleanField(default=False)
     has_parking = models.BooleanField(default=False)
     has_balcony = models.BooleanField(default=False)
-    heating_type = models.CharField(max_length=64, blank=True)  # central, kombi, vs.
+    heating_type = models.CharField(max_length=64, blank=True)  # central, kombi, avs.
 
     # analytics
     view_count = models.PositiveIntegerField(default=0, db_index=True)

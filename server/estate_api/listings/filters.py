@@ -1,8 +1,8 @@
 import django_filters
-from listings.models import Property, City, District
+from listings.models import Listing, City, District
 
 class PropertyFilter(django_filters.FilterSet):
-    property_type_key = django_filters.CharFilter(field_name='property_type__key', lookup_expr='exact')
+    property_type = django_filters.CharFilter(field_name='category__slug', lookup_expr='exact')
     
     min_price = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
     max_price = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
@@ -11,7 +11,7 @@ class PropertyFilter(django_filters.FilterSet):
     district_slug = django_filters.CharFilter(field_name='district__slug', lookup_expr='exact')
 
     class Meta:
-        model = Property
+        model = Listing
         fields = {
             'listing_type': ['exact'],
             'rooms': ['exact'],

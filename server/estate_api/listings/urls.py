@@ -1,9 +1,9 @@
-from django.urls import path
-from listings.views import PropertyListView, PropertyDetailView
+# from django.urls import path
+# from listings.views import PropertyListView, PropertyDetailView
 
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import ListingViewSet, ListingImageViewSet, InquiryViewSet, CityViewSet, FavoriteViewSet
+from .views import ListingListCreateView, ListingDetailView, IncrementListingView
 
 # urlpatterns = [
 #     path("properties", PropertyListView.as_view(), name="property_list"),
@@ -12,13 +12,20 @@ from .views import ListingViewSet, ListingImageViewSet, InquiryViewSet, CityView
 
 
 
-router = DefaultRouter()
-router.register(r'listings', ListingViewSet, basename='listing')
-router.register(r'images', ListingImageViewSet, basename='listingimage')
-router.register(r'inquiries', InquiryViewSet, basename='inquiry')
-router.register(r'cities', CityViewSet, basename='city')
-router.register(r'favorites', FavoriteViewSet, basename='favorite')
-
 urlpatterns = [
-    path('', include(router.urls)),
+    path('listings', ListingListCreateView.as_view(), name='listing-list'),
+    path('listings/<uuid:pk>/', ListingDetailView.as_view(), name='listing-detail'),
+    path('listings/<uuid:pk>/increment_view/', IncrementListingView.as_view(), name='listing-increment-view'),
+
+    # path('images/', image_list, name='image-list'),
+    # path('images/<uuid:pk>/', image_detail, name='image-detail'),
+
+    # path('inquiries/', inquiry_list, name='inquiry-list'),
+    # path('inquiries/<uuid:pk>/', inquiry_detail, name='inquiry-detail'),
+
+    # path('cities/', city_list, name='city-list'),
+    # path('cities/<uuid:pk>/', city_detail, name='city-detail'),
+
+    # path('favorites/', favorite_list, name='favorite-list'),
+    # path('favorites/<uuid:pk>/', favorite_detail, name='favorite-detail'),
 ]

@@ -28,10 +28,10 @@ export default function Listings() {
     const form = useForm<FieldValues>({
         defaultValues: {
             listing_type: searchParams.get('listing_type') || '',
-            property_type_key: searchParams.get('property_type_key') || '',
+            property_type: searchParams.get('property_type') || '',
             city_slug: searchParams.get('city_slug') || '',
             district_slug: searchParams.get('district_slug') || '',
-            min_price: searchParams.get('min_price') || '0', 
+            min_price: searchParams.get('min_price') || '0',
             max_price: searchParams.get('max_price') || '10000000',
             rooms: searchParams.get("rooms") || "",
         }
@@ -45,7 +45,7 @@ export default function Listings() {
 
             try {
                 const queryString = searchParams.toString();
-                const response = await axios.get(`http://127.0.0.1:8000/api/properties?${queryString}`);
+                const response = await axios.get(`http://localhost:8000/api/listings?${queryString}`);
                 setProperties(response.data);
             } catch (error) {
                 console.error("Veri alınırken bir hata oluştu: ", error);

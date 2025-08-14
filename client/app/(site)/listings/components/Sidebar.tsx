@@ -27,14 +27,14 @@ export default function Sidebar({ hidden, onSubmit }: SidebarProps) {
     const [selectedFilters, setSelectedFilters] = useState<any>({});
 
     const activeListingType = watch('listing_type');
-    const activePropertyType = watch("property_type_key");
+    const activePropertyType = watch("property_type");
     const selectedCity = watch("city_slug");
     const activeRooms = watch("rooms");
 
     useEffect(() => {
         const filters = {
             listing_type: searchParams.get("listing_type"),
-            property_type_key: searchParams.get('property_type_key'),
+            property_type: searchParams.get('property_type'),
             city_slug: searchParams.get('city_slug'),
             district_slug: searchParams.get('district_slug'),
         }
@@ -54,9 +54,9 @@ export default function Sidebar({ hidden, onSubmit }: SidebarProps) {
 
     const handlePropertyTypeClick = (type: string) => {
         if (activePropertyType === type) {
-            setValue("property_type_key", "");
+            setValue("property_type", "");
         } else {
-            setValue("property_type_key", type);
+            setValue("property_type", type);
         }
 
         onSubmit();

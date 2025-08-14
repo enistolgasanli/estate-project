@@ -1,81 +1,62 @@
-from django.shortcuts import render
-from rest_framework import generics
-from listings.models import Property
-from listings.serializers import PropertySerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, permissions
+from .models import Listing
+from .serializers import ListingListSerializer, ListingDetailSerializer
+from django.shortcuts import get_object_or_404
+from listings.permissions import IsAdminOrReadOnly
 from listings.filters import PropertyFilter
 
-class PropertyListView(generics.ListAPIView):
-    queryset = Property.objects.all()
-    serializer_class = PropertySerializer
+class ListingListCreateView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     filterset_class = PropertyFilter
 
-class PropertyDetailView(generics.RetrieveAPIView):
-    queryset = Property.objects.all()
-    serializer_class = PropertySerializer
-    lookup_field = "id"
+    def get(self, request):
+        queryset = Listing.objects.filter(is_deleted=False)
+        filtered_queryset = PropertyFilter(request.GET, queryset=queryset).qs
+        serializer = ListingListSerializer(filtered_queryset, many=True)
+        return Response(serializer.data)
 
-# apps/realestate/views.py
-from rest_framework import viewsets, permissions, filters, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
-from .models import Listing, ListingImage, Inquiry, City, PropertyCategory, Favorite
-from .serializers import (
-    ListingListSerializer, ListingDetailSerializer,
-    ListingImageSerializer, InquirySerializer, CitySerializer, FavoriteSerializer
-)
+    def post(self, request):
+        serializer = ListingDetailSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(owner=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class IsOwnerOrAdmin(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        # owners or staff
-        return getattr(request.user, 'is_staff', False) or obj.owner == request.user
+class ListingDetailView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
 
-class ListingViewSet(viewsets.ModelViewSet):
-    queryset = Listing.objects.filter(is_deleted=False).select_related('city', 'district', 'neighborhood', 'agent', 'owner')
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['city', 'district', 'category', 'status', 'rooms', 'price']
-    search_fields = ['title', 'description', 'address']
-    ordering_fields = ['price', 'created_at', 'published_at', 'view_count']
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrAdmin]
+    def get_object(self, pk):
+        return get_object_or_404(Listing, pk=pk, is_deleted=False)
 
-    def get_serializer_class(self):
-        if self.action in ['list', 'retrieve']:
-            return ListingDetailSerializer if self.action == 'retrieve' else ListingListSerializer
-        return ListingDetailSerializer
+    def get(self, request, pk):
+        listing = self.get_object(pk)
+        serializer = ListingDetailSerializer(listing)
+        return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+    def put(self, request, pk):
+        listing = self.get_object(pk)
+        if listing.owner != request.user and not request.user.is_staff:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = ListingDetailSerializer(listing, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post'], permission_classes=[permissions.AllowAny])
-    def increment_view(self, request, pk=None):
-        listing = self.get_object()
-        listing.view_count = models.F('view_count') + 1
-        listing.save(update_fields=['view_count'])
-        listing.refresh_from_db()
-        return Response({'view_count': listing.view_count})
+    def delete(self, request, pk):
+        listing = self.get_object(pk)
+        if listing.owner != request.user and not request.user.is_staff:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+        listing.soft_delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-class ListingImageViewSet(viewsets.ModelViewSet):
-    serializer_class = ListingImageSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = ListingImage.objects.all()
-
-class InquiryViewSet(viewsets.ModelViewSet):
-    serializer_class = InquirySerializer
+class IncrementListingView(APIView):
     permission_classes = [permissions.AllowAny]
-    queryset = Inquiry.objects.all()
 
-class CityViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = City.objects.all()
-    serializer_class = CitySerializer
-
-class FavoriteViewSet(viewsets.ModelViewSet):
-    serializer_class = FavoriteSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        return Favorite.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def post(self, request, pk):
+        listing = get_object_or_404(Listing, pk=pk, is_deleted=False)
+        listing.view_count += 1
+        listing.save()
+        return Response({'view_count': listing.view_count})
